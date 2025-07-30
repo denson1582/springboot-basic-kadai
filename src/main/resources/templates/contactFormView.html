@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>お問い合わせフォーム</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* 上部に寄せる */
+            min-height: 100vh;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px; /* フォームの最大幅 */
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start; /* ラベルと入力欄の先頭を揃える */
+        }
+        .form-group label {
+            width: 150px; /* ラベルの幅を固定 */
+            flex-shrink: 0; /* ラベルが縮まないようにする */
+            margin-right: 20px;
+            padding-top: 8px; /* 入力欄と高さを合わせるため */
+            font-weight: bold;
+            color: #555;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group textarea {
+            flex-grow: 1; /* 入力欄が残りのスペースを占めるようにする */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box; /* paddingとborderを幅に含める */
+            width: auto; /* flex-growとの併用 */
+        }
+        .form-group textarea {
+            min-height: 120px; /* テキストエリアの最小高さ */
+            resize: vertical; /* 縦方向のみリサイズ可能にする */
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-left: 170px; /* ラベルの幅 + margin-right に合わせる */
+            margin-top: 5px;
+        }
+        .submit-button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .submit-button-container button {
+            padding: 12px 30px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .submit-button-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>お問い合わせフォーム</h1>
+
+        
+
+        <form th:action="@{/confirm}" method="post" th:object="${contactForm}">
+			<div th:if="${#fields.hasGlobalErrors()}" style="color: red; margin-bottom: 15px; text-align: center;">
+			            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+			        </div>
+					
+            <div class="form-group">
+                <label for="name">お名前</label>
+                <div>
+                    <input type="text" id="name" th:field="*{name}">
+                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-message"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">メールアドレス</label>
+                <div>
+                    <input type="email" id="email" th:field="*{email}">
+                    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="message">お問い合わせ内容</label>
+                <div>
+                    <textarea id="message" th:field="*{message}"></textarea>
+                    <div th:if="${#fields.hasErrors('message')}" th:errors="*{message}" class="error-message"></div>
+                </div>
+            </div>
+
+            <div class="submit-button-container">
+                <button type="submit">確認画面へ</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
